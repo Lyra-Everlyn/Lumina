@@ -68,7 +68,7 @@ public class ChatFragment extends Fragment {
     private long currentSessionId = -1;
     private int currentUserId;
 
-    private static final String GROQ_API_KEY = "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";
+    private static final String GROQ_API_KEY = "";
     private static final String GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
     @Nullable
