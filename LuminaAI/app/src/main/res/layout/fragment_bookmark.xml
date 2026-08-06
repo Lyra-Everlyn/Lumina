@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light_gray"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".fragments.BookmarkFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Saved Answers &amp; Bookmarks"
+        android:textColor="@color/text_dark"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Easily review your important learning notes"
+        android:textColor="@color/text_gray"
+        android:textSize="13sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerBookmarks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp" />
+
+    <TextView
+        android:id="@+id/tvNoBookmarks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No bookmarked answers yet.\nTap the bookmark icon on any AI answer to save it here."
+        android:textColor="@color/text_gray"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+</LinearLayout>

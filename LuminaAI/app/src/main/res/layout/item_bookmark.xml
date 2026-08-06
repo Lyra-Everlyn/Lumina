@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header của thẻ: Chủ đề/Tiêu đề chat & Nút hủy Bookmark -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvBookmarkSessionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/btnRemoveBookmark"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Linear Equations"
+                android:textColor="@color/primary_purple"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <!-- Nút hủy Bookmark (Xóa trạng thái lưu) -->
+            <ImageView
+                android:id="@+id/btnRemoveBookmark"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Remove bookmark"
+                android:src="@drawable/ic_unbookmark"
+                app:tint="@color/orange_xp" />
+        </RelativeLayout>
+
+        <!-- Nội dung câu trả lời được bookmark -->
+        <TextView
+            android:id="@+id/tvBookmarkContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="[Subject: Mathematics | Level: High School] To solve the equation 2x + 5 = 15, we isolate x..."
+            android:textColor="@color/text_dark"
+            android:textSize="14sp" />
+
+        <!-- Thời gian lưu -->
+        <TextView
+            android:id="@+id/tvBookmarkTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Saved 2 hours ago"
+            android:textColor="@color/text_gray"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
