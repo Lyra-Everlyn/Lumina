@@ -52,7 +52,7 @@ public class DashboardActivity extends AppCompatActivity {
                 } else if (itemId == R.id.nav_bookmark) {
                     selectedFragment = new BookmarkFragment();
                 } else if (itemId == R.id.nav_profile) {
-                    //selectedFragment = new ProfileFragment();
+                    selectedFragment = new ProfileFragment();
                 }
 
                 if (selectedFragment != null) {

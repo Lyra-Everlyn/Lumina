@@ -337,7 +337,7 @@ public class ChatFragment extends Fragment {
         try {
             Cursor cursor = db.rawQuery(
                     "SELECT s.sessionId, s.sessionTitle, s.createdAt, " +
-                            "(SELECT m.messageText FROM ChatMessages m WHERE m.sessionId = s.sessionId AND m.isUser = 0 ORDER BY m.createdAt ASC LIMIT 1) as firstAiMsg " +
+                            "(SELECT m.messageText FROM ChatMessages m WHERE m.sessionId = s.sessionId AND m.isUser = 0 ORDER BY m.createdAt DESC LIMIT 1) as latestAiMsg " +
                             "FROM ChatSessions s WHERE s.userId = ? ORDER BY s.createdAt DESC",
                     new String[]{String.valueOf(currentUserId)}
             );
@@ -347,10 +347,9 @@ public class ChatFragment extends Fragment {
                     long id = cursor.getLong(0);
                     String title = cursor.getString(1);
                     long createdAt = cursor.getLong(2);
-                    String firstAiMsg = cursor.getString(3);
+                    String latestAiMsg = cursor.getString(3);
 
-                    // Trích xuất tên môn học thật từ phản hồi của AI
-                    String subjectName = extractSubjectFromResponse(firstAiMsg);
+                    String subjectName = extractSubjectFromResponse(latestAiMsg);
 
                     recentChatList.add(new ChatSession(id, title, subjectName, createdAt));
                 } while (cursor.moveToNext());

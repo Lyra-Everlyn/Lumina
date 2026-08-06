@@ -170,6 +170,20 @@ public class UserRepository {
         return style;
     }
 
+    private String extractSubjectFromResponse(String responseText) {
+        if (responseText == null) return "General";
+        try {
+            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\[Subject:\\s*(.*?)\\s*\\|");
+            java.util.regex.Matcher matcher = pattern.matcher(responseText);
+            if (matcher.find()) {
+                return matcher.group(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Academic";
+    }
+
     public List<ChatSession> getRecentChatSessions(String email, int limit) {
         List<ChatSession> list = new ArrayList<>();
         int userId = getUserIdByEmail(email);
@@ -177,7 +191,9 @@ public class UserRepository {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT sessionId, sessionTitle, createdAt FROM ChatSessions WHERE userId = ? ORDER BY createdAt DESC LIMIT ?",
+                "SELECT s.sessionId, s.sessionTitle, s.createdAt, " +
+                        "(SELECT m.messageText FROM ChatMessages m WHERE m.sessionId = s.sessionId AND m.isUser = 0 ORDER BY m.createdAt DESC LIMIT 1) as latestAiMsg " +
+                        "FROM ChatSessions s WHERE s.userId = ? ORDER BY s.createdAt DESC LIMIT ?",
                 new String[]{String.valueOf(userId), String.valueOf(limit)}
         );
 
@@ -186,13 +202,15 @@ public class UserRepository {
                 long id = cursor.getLong(0);
                 String title = cursor.getString(1);
                 long time = cursor.getLong(2);
+                String latestAiMsg = cursor.getString(3);
 
-                String subject = "ACADEMIC";
+                String subject = extractSubjectFromResponse(latestAiMsg);
 
                 list.add(new ChatSession(id, title, subject, time));
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return list;
     }
 }

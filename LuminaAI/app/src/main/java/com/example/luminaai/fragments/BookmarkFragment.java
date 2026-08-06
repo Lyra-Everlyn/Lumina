@@ -109,7 +109,6 @@ public class BookmarkFragment extends Fragment {
         bookmarkList.clear();
 
         try {
-            // Truy vấn lấy các tin nhắn được bookmark của user hiện tại thông qua bảng ChatSessions
             String query = "SELECT m.messageId, m.sessionId, s.sessionTitle, m.messageText, m.createdAt " +
                     "FROM ChatMessages m " +
                     "INNER JOIN ChatSessions s ON m.sessionId = s.sessionId " +
