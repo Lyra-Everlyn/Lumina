@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bg_light_gray">#F8F9FE</color>
+    <color name="primary_purple">#3D31C1</color>
+    <color name="primary_purple_light">#EEECFB</color>
+    <color name="text_dark">#111827</color>
+    <color name="text_gray">#4B5563</color>
+    <color name="orange_xp">#B45309</color>
+    <color name="orange_light">#FEF3C7</color>
+    <color name="teal_timer">#047857</color>
+    <color name="teal_light">#D1FAE5</color>
+    <color name="blue_insight_bg">#EEF2FF</color>
+    <color name="math_purple">#6D28D9</color>
+    <color name="math_light">#EDE9FE</color>
+    <color name="physics_orange">#C2410C</color>
+    <color name="divider_color">#E5E7EB</color>
+    <color name="math_orange">#B45309</color>
+    <color name="math_orange_light">#FEF3C7</color>
+    <color name="msg_user_bg">#3D31C1</color>
+    <color name="msg_ai_bg">#F3F4F6</color>
+    <color name="formula_bg">#EEECFB</color>
+    <color name="formula_text">#3D31C1</color>
+    <color name="science_green">#10B981</color>
+    <color name="science_light">#D1FAE5</color>
+    <color name="history_orange">#F59E0B</color>
+    <color name="history_light">#FEF3C7</color>
+    <color name="literature_blue">#3B82F6</color>
+    <color name="literature_light">#DBEAFE</color>
+    <color name="chemistry_teal">#06B6D4</color>
+    <color name="chemistry_light">#CFFAFE</color>
+    <color name="bg_dark">#1A1A1E</color>
+    <color name="world_history_gold">#EAB308</color>
+    <color name="world_history_light">#FEF9C3</color>
+</resources>
