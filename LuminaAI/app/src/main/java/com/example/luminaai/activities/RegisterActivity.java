@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.luminaai.helpers.EmailValidator;
 import com.example.luminaai.helpers.PasswordUtils;
+import com.example.luminaai.helpers.SessionManager;
 import com.example.luminaai.repository.UserRepository;
 
 import com.example.luminaai.R;
@@ -37,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     private UserRepository userRepository;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
+    private SessionManager sessionManager;
     private static final int RC_SIGN_IN = 9001;
 
     @Override
@@ -53,6 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         userRepository = new UserRepository(this);
         mAuth = FirebaseAuth.getInstance();
+        sessionManager = new SessionManager(this); // Khởi tạo SessionManager
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -100,6 +103,9 @@ public class RegisterActivity extends AppCompatActivity {
                 boolean isInserted = userRepository.registerUser(fullName, email, hashedPassword);
 
                 if (isInserted) {
+                    // LƯU SESSION ĐĂNG NHẬP SAU KHI ĐĂNG KÝ THỦ CÔNG THÀNH CÔNG
+                    sessionManager.createLoginSession(email);
+
                     Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
                     Intent intent;
                     if (userRepository.isUserSetupCompleted(email)) {
@@ -127,6 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -140,6 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
     }
+
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -154,6 +162,9 @@ public class RegisterActivity extends AppCompatActivity {
                             String hashedGooglePassword = PasswordUtils.hashPassword(rawGooglePassword);
 
                             userRepository.registerGoogleUserIfNotExists(name, email, hashedGooglePassword);
+
+                            // LƯU SESSION ĐĂNG NHẬP SAU KHI ĐĂNG KÝ GOOGLE THÀNH CÔNG
+                            sessionManager.createLoginSession(email);
 
                             Toast.makeText(RegisterActivity.this, "Registration with Google successful!", Toast.LENGTH_SHORT).show();
 

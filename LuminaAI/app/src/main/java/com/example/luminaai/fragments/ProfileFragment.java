@@ -17,6 +17,9 @@ import com.example.luminaai.activities.LoginActivity;
 import com.example.luminaai.activities.UserSetupActivity;
 import com.example.luminaai.helpers.SessionManager;
 import com.example.luminaai.repository.UserRepository;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.button.MaterialButton;
 
@@ -28,6 +31,9 @@ public class ProfileFragment extends Fragment {
     private UserRepository userRepository;
     private SessionManager sessionManager;
     private String currentUserEmail;
+
+    // Thêm GoogleSignInClient để xử lý đăng xuất triệt để
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Nullable
     @Override
@@ -46,10 +52,17 @@ public class ProfileFragment extends Fragment {
 
         currentUserEmail = sessionManager.getEmail();
 
+        // Khởi tạo GoogleSignInClient
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso);
+
         // Load thông tin người dùng lên giao diện
         loadUserData();
 
-        // Xử lý sự kiện chỉnh sửa thông tin (Tự nguyện - bật cờ EDIT_MODE)
+        // Xử lý sự kiện chỉnh sửa thông tin (bật cờ EDIT_MODE)
         btnEditPreferences.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), UserSetupActivity.class);
             intent.putExtra("EDIT_MODE", true);
@@ -58,17 +71,24 @@ public class ProfileFragment extends Fragment {
 
         // Xử lý sự kiện đăng xuất
         btnLogout.setOnClickListener(v -> {
+            // 1. Xóa phiên ứng dụng nội bộ
             sessionManager.logoutUser();
+
+            // 2. Đăng xuất khỏi Firebase Auth
             FirebaseAuth.getInstance().signOut();
 
-            Toast.makeText(getContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
+            // 3. Đăng xuất khỏi Google Sign-In Client (Xóa cache tài khoản Google)
+            mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
+                Toast.makeText(getContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(getContext(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            });
         });
 
         return view;
